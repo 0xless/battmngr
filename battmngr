@@ -107,17 +107,10 @@ function error() {
 		
 		4)
 			err "Unrecognized battery mode, please retry"
-			usage
 		;;
 		
 		5)
 			err "Unrecognized battery charge mode, please retry"
-			usage
-		;;
-		
-		6)
-			err "Only one operation at a time can be used"
-			usage
 		;;
 
 		7)
@@ -132,7 +125,6 @@ function error() {
 		
 		9)
 			err "Unexpected error"
-			usage
 		;;
 
 		*)
