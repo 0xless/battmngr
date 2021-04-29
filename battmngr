@@ -36,7 +36,7 @@
 # Outputs:
 #   Writes error message to STDERR
 #######################################
-err() {
+err(){
   echo "$*" >&2
 }
 
@@ -84,7 +84,7 @@ usage(){
 # Outputs:
 #   None
 #######################################
-function error() {
+function error(){
 	case $1 in
 
 		0)
@@ -126,6 +126,10 @@ function error() {
 		9)
 			err "Unexpected error"
 		;;
+		
+		10) 	
+			err "Please invoke this script using sudo"
+		;;
 
 		*)
 			err "Unknown error"
@@ -133,6 +137,21 @@ function error() {
 	esac
 	
 	exit 1
+}
+
+#######################################
+# Check if the script is called using sudo.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+function check_sudo(){
+	if (( $(id -u) != 0 )); then
+		error 10
+	fi;
 }
 
 #######################################
@@ -144,7 +163,7 @@ function error() {
 # Outputs:
 #   None
 #######################################
-function setup() {
+function setup(){
 	modprobe acpi_call
 }
 
@@ -207,8 +226,7 @@ function check_charge_mode(){
 # Outputs:
 #   None
 #######################################
-function set_operation() {
-	setup
+function set_operation(){
 	case $1 in
 
 		1)
@@ -244,8 +262,7 @@ function set_operation() {
 # Outputs:
 #   None
 #######################################
-function set_charge_operation() {
-	setup
+function set_charge_operation(){
 	case $1 in
 
 		1)
@@ -288,9 +305,7 @@ function set_charge_operation() {
 # Outputs:
 #   Print battery mode name on STDOUT
 #######################################
-function read_operation() {
-	setup
-
+function read_operation(){
 	echo '\_SB.PCI0.LPC0.EC0.SPMO' > /proc/acpi/call
 	check=$(cat /proc/acpi/call | cut -d '' -f1)
 
@@ -324,9 +339,7 @@ function read_operation() {
 # Outputs:
 #   Print battery charge mode names on STDOUT
 #######################################
-function read_charge_operation() {
-	setup
-	
+function read_charge_operation(){
 	# rapid charge check
 	echo '\_SB.PCI0.LPC0.EC0.QCHO' > /proc/acpi/call
 	check=$(cat /proc/acpi/call | cut -d '' -f1)
@@ -367,6 +380,9 @@ function read_charge_operation() {
 }
 
 # ----------------------------------------------------------------
+
+check_sudo
+setup
 
 # check if an operation is specified
 if [ -z "$1" ]; then
