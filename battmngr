@@ -56,8 +56,8 @@ usage(){
 	"Options:"\
 	"        -r, --read             read current battery mode"\
 	"        -s, --set              set battery mode"\
-	"        -rc, --read-charg      read current charge mode"\
-	"        -sc, --set-charg       set charge mode"\
+	"        -rc, --read-charge     read current charge mode"\
+	"        -sc, --set-charge      set charge mode"\
 	"Battery Modes:"\
 	"        1        Intelligent Cooling"\
 	"        2        Extreme Performance"\
