@@ -21,7 +21,8 @@ To install `battmngr` you only need to download the script, put it in a director
 
 ## Usage
 
-```Usage: battmngr [OPTION...] MODE
+```
+Usage: battmngr [OPTION...] MODE
 Usage: battmngr [OPTION...] MODE
 Options:
         -r, --read             read current battery mode
@@ -46,17 +47,18 @@ Examples:
 ```
 ## Note
 When in configuration:
+- Rapid Charge Off
+- Battery Conservation On
 
-    Rapid Charge Off
-    Battery Conservation On
-
-issuing the command battmngr -sc 1 will turn on Rapid Charge mode but disable Battery Conservation mode.
+issuing the command `battmngr -sc 1` will turn on Rapid Charge mode but disable Battery Conservation mode.
 It's possible to activate both Rapid Charge and Battery Conservation modes starting from configuration:
 
-    Rapid Charge On
-    Battery Conservation Off
+- Rapid Charge On
+- Battery Conservation Off
 
-and issuing the command battmngr -sc 3. This configuration is not obtainable using official lenovo software and should be used with attention. Check here for more: https://wiki.archlinux.org/title/Lenovo_IdeaPad_5_15are05#Note
+and issuing the command `battmngr -sc 3`  
+This configuration is not obtainable using official lenovo software and should be avoided.  
+Check here for more: https://wiki.archlinux.org/title/Lenovo_IdeaPad_5_15are05#Note
 
 ## License
 
