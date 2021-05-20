@@ -23,7 +23,6 @@ To install `battmngr` you only need to download the script, put it in a director
 
 ```
 Usage: battmngr [OPTION...] MODE
-Usage: battmngr [OPTION...] MODE
 Options:
         -r, --read             read current battery mode
         -s, --set              set battery mode
