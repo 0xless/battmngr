@@ -48,7 +48,7 @@ Examples:
 ⚠️**Looking for testers**⚠️ - do you want to use `battmngr` on your acpi_calls supported laptop? 
 Make sure open an issue detailing:
 - your laptop model
-- the output of: `sudo dmidecode -s system-product-nameand`
+- the output of: `sudo dmidecode -s system-product-name`
 - calls/values for battery related operations (if known)
 
 ![I'm actively trying to support more devices](https://github.com/0xless/battmngr/issues/1) and I'm in need of someone willing to point out new models `battmngr` could support and test experimental verions of the script.
