@@ -51,7 +51,7 @@ Make sure open an issue detailing:
 - the output of: `sudo dmidecode -s system-product-name`
 - calls/values for battery related operations (if known)
 
-![I'm actively trying to support more devices](https://github.com/0xless/battmngr/issues/1) and I'm in need of someone willing to point out new models `battmngr` could support and test experimental verions of the script.
+[I'm actively trying to support more devices](https://github.com/0xless/battmngr/issues/1) and I'm in need of someone willing to point out new models `battmngr` could support and test experimental verions of the script.
 
 Looking to test on:
 - Lenovo IdeaPad Flex 5 14ARE05
