@@ -15,6 +15,7 @@ On Windows native software to support battery and performance operations exist, 
 ### Prerequisites
 
 In order to use battmngr the `acpi-call` module needs to be installed.
+This script also depends on `jq`.
 
 ### Installation
 
