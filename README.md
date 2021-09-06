@@ -47,6 +47,12 @@ Examples:
         battmngr -sc 1
         battmngr -s 1 -r -sc 4 -rc
 ```
+## Supported laptops
+
+At the moment, this version of `battmngs` supports:
+- Ideapad 15ARE05 (81YQ)
+- Ideapad 14ALC05 (82LM)
+
 ## Contributing
 ⚠️**Looking for testers**⚠️ - do you want to use `battmngr` on your acpi_calls supported laptop? 
 Make sure open an issue detailing:
