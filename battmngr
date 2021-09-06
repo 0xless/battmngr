@@ -1,4 +1,7 @@
 #!/bin/bash
+
+config_file="configs.json"
+
 #
 # Read/Set battery modes in lenovo ideapad 15are05 using acpi_call kernel module
 
@@ -11,16 +14,16 @@
 ## Battery modes:
 ##	1	Intelligent Cooling
 ##	2	Extreme Performance
-##	3	Battery Saving	
-##	
+##	3	Battery Saving
+##
 ## Charge modes:
 ##	1	Rapid Charge On
 ##	2	Rapid Charge Off
 ##	3	Battery Conservation On
-##	4	Battery Conservation Off		
+##	4	Battery Conservation Off
 ##
 ## Examples:
-## 	battmngr -r 
+## 	battmngr -r
 ## 	battmngr -s 1
 ##	battmngr -rc
 ##	battmngr -sc 1
@@ -91,7 +94,7 @@ function error(){
 			err "Please provide a valid battery mode to set (only 1,2 and 3 are valid values)"
 			usage
 		;;
-		
+
 		1)
 			err "Please provide a valid battery charge mode to set (only 1,2,3 and 4 are valid values)"
 			usage
@@ -100,15 +103,15 @@ function error(){
 		2)
 			err "Can't update the battery mode, please retry"
 		;;
-		
+
 		3)
 			err "Can't update the battery charge mode, please retry"
 		;;
-		
+
 		4)
 			err "Unrecognized battery mode, please retry"
 		;;
-		
+
 		5)
 			err "Unrecognized battery charge mode, please retry"
 		;;
@@ -122,12 +125,12 @@ function error(){
 			err "Please specify an operation"
 			usage
 		;;
-		
+
 		9)
 			err "Unexpected error"
 		;;
-		
-		10) 	
+
+		10)
 			err "Please invoke this script using sudo"
 		;;
 
@@ -135,7 +138,7 @@ function error(){
 			err "Unknown error"
 		;;
 	esac
-	
+
 	exit 1
 }
 
@@ -165,10 +168,11 @@ function check_sudo(){
 #######################################
 function setup(){
 	modprobe acpi_call
+	model=`sudo dmidecode -s system-product-name`
 }
 
 #######################################
-# Reads the current mode and check if 
+# Reads the current mode and check if
 # it's equal to the expected one.
 # Globals:
 #   None
@@ -177,8 +181,8 @@ function setup(){
 # Outputs:
 #   None
 #######################################
-function check_mode(){
-	echo '\_SB.PCI0.LPC0.EC0.SPMO' > /proc/acpi/call
+function check_mode_1(){
+	echo "\\"`cat $config_file | jq -r '.'\"$model\"'."battery"."read_op"."1"'` > /proc/acpi/call
 	check=$(cat /proc/acpi/call | cut -d '' -f1)
 
 	if ! (( $check == $1 )); then
@@ -187,7 +191,26 @@ function check_mode(){
 }
 
 #######################################
-# Reads the current charge mode and 
+# Reads the current mode and check if
+# it's equal to the expected one.
+# Globals:
+#   None
+# Arguments:
+#   Expected mode code
+# Outputs:
+#   None
+#######################################
+function check_mode_2(){
+	echo "\\"`cat $config_file | jq -r '.'\"$model\"'."battery"."read_op"."2"'` > /proc/acpi/call
+	check=$(cat /proc/acpi/call | cut -d '' -f1)
+
+	if ! (( $check == $1 )); then
+		error 2
+	fi
+}
+
+#######################################
+# Reads the current charge mode and
 # check if it's equal to the expected one.
 # Globals:
 #   None
@@ -200,12 +223,12 @@ function check_mode(){
 function check_charge_mode(){
 	# if we are checking rapid charge mode
 	if (( $1 == 0 )); then
-		echo '\_SB.PCI0.LPC0.EC0.QCHO' > /proc/acpi/call
+		echo "\\"`cat $config_file | jq -r '.'\"$model\"'."charge"."read_op"."rapid_charge"'` > /proc/acpi/call
 		check=$(cat /proc/acpi/call | cut -d '' -f1)
-		
+
 	# if we are checking battery conservation mode
 	elif (( $1 == 1 )); then
-		echo '\_SB.PCI0.LPC0.EC0.BTSM' > /proc/acpi/call
+		echo "\\"`cat $config_file | jq -r '.'\"$model\"'."charge"."read_op"."battery_conservation"'` > /proc/acpi/call
 		check=$(cat /proc/acpi/call | cut -d '' -f1)
 	else
 		# unexpected error!
@@ -230,25 +253,28 @@ function set_operation(){
 	case $1 in
 
 		1)
-			# Intelligent Cooling 
-			echo '\_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x000FB001' > /proc/acpi/call
-			check_mode "0x0"
+			# Intelligent Cooling
+			echo "\\"`cat $config_file | jq -r '.'\"$model\"'."battery"."set_op"."intelligent_cooling"'` > /proc/acpi/call
+			check_mode_1 `cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."intelligent_cooling_1"'`
+			check_mode_2 `cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."intelligent_cooling_2"'`
 		;;
 
 		2)
-			# Extreme Performance 
- 			echo '\_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x0012B001' > /proc/acpi/call
- 			check_mode "0x1"
+			# Extreme Performance
+ 			echo "\\"`cat $config_file | jq -r '.'\"$model\"'."battery"."set_op"."extreme_performance"'` > /proc/acpi/call
+ 			check_mode_1 `cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."extreme_performance_1"'`
+			check_mode_2 `cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."extreme_performance_2"'`
 		;;
 
 		3)
 			# Battery Saving
-			echo '\_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x0013B001' > /proc/acpi/call
-			check_mode "0x2"
+			echo "\\"`cat $config_file | jq -r '.'\"$model\"'."battery"."set_op"."battery_saving"'` > /proc/acpi/call
+			check_mode_1 `cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."battery_saving_1"'`
+			check_mode_2 `cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."battery_saving_2"'`
 		;;
 
 		*)
-			error 9
+			error 4
 		;;
 	esac
 }
@@ -267,26 +293,26 @@ function set_charge_operation(){
 
 		1)
 			# Rapid Charge On
-			echo '\_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x07' > /proc/acpi/call
-			check_charge_mode 0 "0x1"
+			echo "\\"`cat $config_file | jq -r '.'\"$model\"'."charge"."set_op"."rapid_charge_on"'` > /proc/acpi/call
+			check_charge_mode 0 `cat $config_file | jq -r '.'\"$model\"'."charge"."vals"."rapid_charge_on"'`
 		;;
 
 		2)
-			# Rapid Charge Off 
- 			echo '\_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x08' > /proc/acpi/call
- 			check_charge_mode 0 "0x0"
+			# Rapid Charge Off
+ 			echo "\\"`cat $config_file | jq -r '.'\"$model\"'."charge"."set_op"."rapid_charge_off"'` > /proc/acpi/call
+ 			check_charge_mode 0 `cat $config_file | jq -r '.'\"$model\"'."charge"."vals"."rapid_charge_off"'`
 		;;
 
 		3)
 			# Battery Conservation On
-			echo '\_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x03' > /proc/acpi/call
-			check_charge_mode 1 "0x1"
+			echo "\\"`cat $config_file | jq -r '.'\"$model\"'."charge"."set_op"."battery_conservation_on"'` > /proc/acpi/call
+			check_charge_mode 1 `cat $config_file | jq -r '.'\"$model\"'."charge"."vals"."battery_conservation_on"'`
 		;;
-		
+
 		4)
 			# Battery Conservation Off
-			echo '\_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x05' > /proc/acpi/call
-			check_charge_mode 1 "0x0"
+			echo "\\"`cat $config_file | jq -r '.'\"$model\"'."charge"."set_op"."battery_conservation_off"'` > /proc/acpi/call
+			check_charge_mode 1 `cat $config_file | jq -r '.'\"$model\"'."charge"."vals"."battery_conservation_off"'`
 		;;
 
 		*)
@@ -306,20 +332,23 @@ function set_charge_operation(){
 #   Print battery mode name on STDOUT
 #######################################
 function read_operation(){
-	echo '\_SB.PCI0.LPC0.EC0.SPMO' > /proc/acpi/call
+	echo "\\"`cat $config_file | jq -r '.'\"$model\"'."battery"."read_op"."1"'` > /proc/acpi/call
 	check=$(cat /proc/acpi/call | cut -d '' -f1)
+	
+	echo "\\"`cat $config_file | jq -r '.'\"$model\"'."battery"."read_op"."2"'` > /proc/acpi/call
+	check2=$(cat /proc/acpi/call | cut -d '' -f1)
 
-	case $check in
+	case $check$check2 in
 
-		"0x0")
+		`cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."intelligent_cooling_1"'``cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."intelligent_cooling_2"'`)
 			echo "Intelligent Cooling"
 		;;
 
-		"0x1")
+		`cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."extreme_performance_1"'``cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."extreme_performance_2"'`)
 			echo "Extreme Performance"
 		;;
 
-		"0x2")
+		`cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."battery_saving_1"'``cat $config_file | jq -r '.'\"$model\"'."battery"."vals"."battery_saving_2"'`)
 			echo "Battery Saving"
 		;;
 
@@ -341,16 +370,16 @@ function read_operation(){
 #######################################
 function read_charge_operation(){
 	# rapid charge check
-	echo '\_SB.PCI0.LPC0.EC0.QCHO' > /proc/acpi/call
+	echo "\\"`cat $config_file | jq -r '.'\"$model\"'."charge"."read_op"."rapid_charge"'` > /proc/acpi/call
 	check=$(cat /proc/acpi/call | cut -d '' -f1)
 
 	case $check in
 
-		"0x0")
+		`cat $config_file | jq -r '.'\"$model\"'."charge"."vals"."rapid_charge_off"'`)
 			echo "Rapid Charge Off"
 		;;
 
-		"0x1")
+		`cat $config_file | jq -r '.'\"$model\"'."charge"."vals"."rapid_charge_on"'`)
 			echo "Rapid Charge On"
 		;;
 
@@ -360,16 +389,16 @@ function read_charge_operation(){
 	esac
 	
 	# battery conservation check
-	echo '\_SB.PCI0.LPC0.EC0.BTSM' > /proc/acpi/call
+	echo "\\"`cat $config_file | jq -r '.'\"$model\"'."charge"."read_op"."battery_conservation"'`> /proc/acpi/call
 	check=$(cat /proc/acpi/call | cut -d '' -f1)
 
 	case $check in
 
-		"0x0")
+		`cat $config_file | jq -r '.'\"$model\"'."charge"."vals"."battery_conservation_off"'`)
 			echo "Battery Conservation Off"
 		;;
 
-		"0x1")
+		`cat $config_file | jq -r '.'\"$model\"'."charge"."vals"."battery_conservation_on"'`)
 			echo "Battery Conservation On"
 		;;
 
@@ -402,7 +431,7 @@ while [[ "$#" -gt 0 ]]; do
 			fi
 			
 			# if the parameter is good, set param
-	  		if (($2 >= 0 && $2 <= 3));  then
+	  		if (($2 >= 1 && $2 <= 3));  then
 				set_operation $2
 				
 			# if it's not in the expected range calls error
@@ -435,7 +464,7 @@ while [[ "$#" -gt 0 ]]; do
 			fi
 			
 			# if the parameter is good, set param
-	  		if (($2 >= 0 && $2 <= 4));  then
+	  		if (($2 >= 1 && $2 <= 4));  then
 				set_charge_operation $2
 				
 			# if it's not in the expected range calls error

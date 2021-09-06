@@ -1,0 +1,105 @@
+{
+  "81YQ": 
+  {
+    "model":"15are05",
+    
+    "battery":
+    {
+      "set_op":
+      {
+        "intelligent_cooling":"_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x000FB001",
+        "extreme_performance":"_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x0012B001",
+        "battery_saving":"_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x0013B001"
+      },
+      "read_op":
+      {
+        "1":"_SB.PCI0.LPC0.EC0.SPMO",
+        "2":"_SB.PCI0.LPC0.EC0.FCMO"
+      },
+      "vals":
+      {
+       "intelligent_cooling_1":"0x0",
+       "intelligent_cooling_2":"0x0",
+       "extreme_performance_1":"0x1",
+       "extreme_performance_2":"0x1",
+       "battery_saving_1":"0x2",
+       "battery_saving_2":"0x2"
+      }
+    },
+    
+    "charge":
+    {
+      "set_op":
+      {
+        "rapid_charge_on":"_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x07",
+        "rapid_charge_off":"_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x08",
+        "battery_conservation_on":"_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x03",
+        "battery_conservation_off":"_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x05"
+      },
+      "read_op":
+      {
+        "rapid_charge":"_SB.PCI0.LPC0.EC0.QCHO",
+        "battery_conservation":"_SB.PCI0.LPC0.EC0.BTSM"
+      },
+      "vals":
+      {
+	"rapid_charge_on":"0x1",
+        "rapid_charge_off":"0x0",
+        "battery_conservation_on":"0x1",
+        "battery_conservation_off":"0x0"
+      }
+    }
+  },
+  
+  "82LM": 
+  {
+    "model":"14are05/14alc05",
+    
+    "battery":
+    {
+      "set_op":
+      {
+        "intelligent_cooling":"_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x000FB001",
+        "extreme_performance":"_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x0012B001",
+        "battery_saving":"_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x0013B001"
+      },
+      "read_op":
+      {
+        "1":"_SB.PCI0.LPC0.EC0.STMD",
+        "2":"_SB.PCI0.LPC0.EC0.QTMD"
+      },
+      "vals":
+      {
+       "intelligent_cooling_1":"0x1",
+       "intelligent_cooling_2":"0x0",
+       "extreme_performance_1":"0x0",
+       "extreme_performance_2":"0x0",
+       "battery_saving_1":"0x0",
+       "battery_saving_2":"0x1"
+      }
+    },
+    
+    "charge":
+    {
+      "set_op":
+      {
+        "rapid_charge_on":"_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x07",
+        "rapid_charge_off":"_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x08",
+        "battery_conservation_on":"_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x03",
+        "battery_conservation_off":"_SB.PCI0.LPC0.EC0.VPC0.SBMC 0x05"
+      },
+      "read_op":
+      {
+        "rapid_charge":"_SB.PCI0.LPC0.EC0.FCGM",
+        "battery_conservation":"_SB.PCI0.LPC0.EC0.BTSG"
+      },
+      "vals":
+      {
+	"rapid_charge_on":"0x1",
+        "rapid_charge_off":"0x0",
+        "battery_conservation_on":"0x1",
+        "battery_conservation_off":"0x0"
+      }
+    }
+  }
+}
