@@ -54,8 +54,7 @@ Make sure open an issue detailing:
 [I'm actively trying to support more devices](https://github.com/0xless/battmngr/issues/1) and I'm in need of someone willing to point out new models `battmngr` could support and test experimental verions of the script.
 
 Looking to test on:
-- Lenovo IdeaPad Flex 5 14are05 (experiemental_support branch works for this model, tested on 82LM* devices)
-- Lenovo IdeaPad Flex 5 14alc05
+- Lenovo IdeaPad Flex 5 14are05/14alc05 (experiemental_support, reported working on 82LM* devices)
 
 ## Note
 When in configuration:
