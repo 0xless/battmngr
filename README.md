@@ -51,7 +51,7 @@ Examples:
 
 At the moment, this version of `battmngs` supports:
 - Ideapad 15ARE05 (81YQ)
-- Ideapad 14ALC05 (82LM) 
+- Ideapad 14ALC05 (82LM) / 14ARE05
 - Possibly other 15*/14* models
 
 For support on systems other than 15ARE05 refer to [`experimental_support` branch](https://github.com/0xless/battmngr/tree/experimental_support)
