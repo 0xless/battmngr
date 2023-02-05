@@ -45,16 +45,10 @@ Examples:
         battmngr -s 1 -r -sc 4 -rc
 ```
 ## Contributing
-⚠️**Looking for testers**⚠️ - do you want to use `battmngr` on your acpi_calls supported laptop? 
-Make sure open an issue detailing:
-- your laptop model
-- the output of: `sudo dmidecode -s system-product-name`
-- calls/values for battery related operations (if known)
+`battmngr` seem to be working fine on the supported devices, but only because ACPI calls values were publicly known.
 
-I'm actively trying to support more devices and I'm in need of someone willing to point out new models `battmngr` could support and test experimental verions of the script.
-
-Looking to test on:
-- Lenovo IdeaPad Flex 5 14are05/14alc05 (experiemental_support, reported working on 82LM* devices)
+If you know any way of discovering ACPI calls values for specific laptop models, please open an issue detailing your process.
+This could help supporting many more potentially compatible laptops.
 
 ## Note
 When in configuration:
