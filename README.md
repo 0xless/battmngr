@@ -1,7 +1,7 @@
 # battmngr
 ![made for ideapad](https://img.shields.io/badge/made%20for-ideapad-blue) ![license](https://img.shields.io/github/license/0xless/battmngr) 
 
-Battery manager to handle system performance modes and charge modes through acpi_calls (for ideapad 15are05/14are05/14alc05). 
+Battery manager to handle system performance modes and charge modes through acpi_calls (for ideapad 15are05/14are05/14alc05/14sARH). 
 
 ![demo](img/demo.gif)
 
